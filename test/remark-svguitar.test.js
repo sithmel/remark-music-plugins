@@ -7,9 +7,9 @@ import assert from "node:assert";
 import { remark } from "remark";
 
 // Import the plugin
-import remarkSvguitar, {
+import remarkGuitarChart, {
   closeBrowser,
-} from "../plugins/remark-svguitar/index.js";
+} from "../plugins/remark-guitar-chart/index.js";
 
 // Suppress console output during tests
 let originalConsoleError;
@@ -33,23 +33,19 @@ describe("remark-svguitar plugin", () => {
   test("should skip svguitar blocks when skipOnMissing is true and Puppeteer fails", async () => {
     const input = `# Guitar Chord Example
 
-\`\`\`svguitar
-{
-  "fingers": [
-    [1, 3],
-    [2, 2],
-    [3, 0],
-    [4, 0],
-    [5, 1],
-    [6, 3]
-  ],
-  "title": "C Major"
-}
+\`\`\`guitar-chard
+  D
+  ######
+  xoo
+  ------
+  ||||||
+  |||o|o
+  ||||*|
 \`\`\`
 
 Regular text.`;
 
-    const processor = remark().use(remarkSvguitar, {
+    const processor = remark().use(remarkGuitarChart, {
       skipOnMissing: true,
       puppeteerOptions: {
         executablePath: "/nonexistent/chrome", // Force browser launch failure
@@ -77,24 +73,29 @@ Regular text.`;
   test("should handle multiple svguitar blocks with skipOnMissing", async () => {
     const input = `# Guitar Chord Examples
 
-\`\`\`svguitar
-{
-  "fingers": [[1, 3], [2, 2], [3, 0]],
-  "title": "C Major"
-}
+\`\`\`guitar-chart
+  D
+  ######
+  xoo
+  ------
+  ||||||
+  |||o|o
+  ||||*|
 \`\`\`
 
 Some text between chords.
 
-\`\`\`svguitar
-{
-  "fingers": [[1, 1], [2, 1], [3, 3], [4, 3], [5, 2], [6, 1]],
-  "barres": [{"fromString": 6, "toString": 1, "fret": 1}],
-  "title": "F Major"
-}
+\`\`\`guitar-chart
+  D
+  ######
+  xoo
+  ------
+  ||||||
+  |||o|o
+  ||||*|
 \`\`\``;
 
-    const processor = remark().use(remarkSvguitar, {
+    const processor = remark().use(remarkGuitarChart, {
       skipOnMissing: true,
       puppeteerOptions: {
         executablePath: "/nonexistent/chrome",
@@ -116,11 +117,14 @@ Some text between chords.
   });
 
   test("should handle plugin options correctly", async () => {
-    const input = `\`\`\`svguitar
-{
-  "fingers": [[1, 3]],
-  "title": "Test"
-}
+    const input = `\`\`\`guitar-chart
+  D
+  ######
+  xoo
+  ------
+  ||||||
+  |||o|o
+  ||||*|
 \`\`\``;
 
     const options = {
@@ -129,7 +133,7 @@ Some text between chords.
       puppeteerOptions: { headless: true },
     };
 
-    const processor = remark().use(remarkSvguitar, options);
+    const processor = remark().use(remarkGuitarChart, options);
 
     // Test that options are accepted without throwing
     await assert.doesNotReject(async () => {
@@ -146,7 +150,7 @@ console.log("hello")
 print("world")
 \`\`\``;
 
-    const processor = remark().use(remarkSvguitar);
+    const processor = remark().use(remarkGuitarChart);
     const result = await processor.process(input);
 
     // Should preserve other code blocks unchanged
@@ -161,10 +165,10 @@ print("world")
   });
 
   test("should handle empty svguitar blocks with skipOnMissing", async () => {
-    const input = `\`\`\`svguitar
+    const input = `\`\`\`guitar-chart
 \`\`\``;
 
-    const processor = remark().use(remarkSvguitar, {
+    const processor = remark().use(remarkGuitarChart, {
       skipOnMissing: true,
       puppeteerOptions: {
         executablePath: "/nonexistent/chrome",
@@ -177,32 +181,6 @@ print("world")
     });
   });
 
-  test("should handle invalid JSON with error inline", async () => {
-    const input = `\`\`\`svguitar
-{
-  "fingers": [1, 3],  // Invalid JSON - missing array brackets
-  "title": "Invalid"
-}
-\`\`\``;
-
-    const processor = remark().use(remarkSvguitar, {
-      errorInline: true,
-      skipOnMissing: true,
-      puppeteerOptions: {
-        executablePath: "/nonexistent/chrome", // Avoid launching real browser
-      },
-    });
-
-    const result = await processor.process(input);
-    const output = result.toString();
-
-    // Should contain error message when errorInline is true and JSON is invalid
-    assert.ok(
-      output.includes("svguitar-error") || output.includes("Invalid JSON"),
-      "Should contain error information in output when errorInline is true",
-    );
-  });
-
   test("should handle no svguitar blocks gracefully", async () => {
     const input = `# Regular Markdown
 
@@ -212,7 +190,7 @@ This is just regular markdown with no guitar chords.
 console.log("Not SVGuitar")
 \`\`\``;
 
-    const processor = remark().use(remarkSvguitar);
+    const processor = remark().use(remarkGuitarChart);
     const result = await processor.process(input);
 
     // Should process normally when no svguitar blocks present
@@ -226,28 +204,24 @@ console.log("Not SVGuitar")
   });
 
   test("should return transformer function", () => {
-    const plugin = remarkSvguitar({ errorInline: true });
+    const plugin = remarkGuitarChart({ errorInline: true });
 
     // Plugin should return a transformer function
     assert.ok(typeof plugin === "function", "Plugin should return a function");
   });
 
   test("should handle successful rendering with real Puppeteer", async () => {
-    const input = `\`\`\`svguitar
-{
-  "fingers": [
-    [1, 3],
-    [2, 2],
-    [3, 0],
-    [4, 0],
-    [5, 1],
-    [6, 3]
-  ],
-  "title": "C Major"
-}
+    const input = `\`\`\`guitar-chart
+  D
+  ######
+  xoo
+  ------
+  ||||||
+  |||o|o
+  ||||*|
 \`\`\``;
 
-    const processor = remark().use(remarkSvguitar, {
+    const processor = remark().use(remarkGuitarChart, {
       skipOnMissing: true, // Skip if Puppeteer not available rather than fail
     });
 
@@ -265,12 +239,12 @@ console.log("Not SVGuitar")
 
 describe("Plugin configuration", () => {
   test("should accept errorInline option", () => {
-    const plugin = remarkSvguitar({ errorInline: true });
+    const plugin = remarkGuitarChart({ errorInline: true });
     assert.ok(typeof plugin === "function", "Should accept errorInline option");
   });
 
   test("should accept skipOnMissing option", () => {
-    const plugin = remarkSvguitar({ skipOnMissing: true });
+    const plugin = remarkGuitarChart({ skipOnMissing: true });
     assert.ok(
       typeof plugin === "function",
       "Should accept skipOnMissing option",
@@ -278,7 +252,7 @@ describe("Plugin configuration", () => {
   });
 
   test("should accept puppeteerOptions", () => {
-    const plugin = remarkSvguitar({
+    const plugin = remarkGuitarChart({
       puppeteerOptions: {
         headless: true,
         args: ["--no-sandbox"],
@@ -288,12 +262,12 @@ describe("Plugin configuration", () => {
   });
 
   test("should work with empty options", () => {
-    const plugin = remarkSvguitar();
+    const plugin = remarkGuitarChart();
     assert.ok(typeof plugin === "function", "Should work with no options");
   });
 
   test("should work with all options combined", () => {
-    const plugin = remarkSvguitar({
+    const plugin = remarkGuitarChart({
       errorInline: true,
       skipOnMissing: false,
       puppeteerOptions: {
@@ -310,28 +284,17 @@ describe("Plugin configuration", () => {
 
 describe("Multiple chord support", () => {
   test("should handle multiple chords in array format", async () => {
-    const input = `\`\`\`svguitar
-[
-  {
-    "fingers": [
-      [1, 3, "3"],
-      [2, 2, "2"],
-      [5, 1, "1"]
-    ],
-    "title": "C Major"
-  },
-  {
-    "fingers": [
-      [1, 3, "3"],
-      [5, 2, "2"],
-      [6, 3, "4"]
-    ],
-    "title": "G Major"
-  }
-]
+    const input = `\`\`\`guitar-chart
+  D
+  ######
+  xoo
+  ------
+  ||||||
+  |||o|o
+  ||||*|
 \`\`\``;
 
-    const processor = remark().use(remarkSvguitar, {
+    const processor = remark().use(remarkGuitarChart, {
       skipOnMissing: true, // Skip if Puppeteer not available
     });
 
@@ -344,18 +307,17 @@ describe("Multiple chord support", () => {
   });
 
   test("should handle single chord (backward compatibility)", async () => {
-    const input = `\`\`\`svguitar
-{
-  "fingers": [
-    [1, 3, "3"],
-    [2, 2, "2"],
-    [5, 1, "1"]
-  ],
-  "title": "C Major"
-}
+    const input = `\`\`\`guitar-chart
+  D
+  ######
+  xoo
+  ------
+  ||||||
+  |||o|o
+  ||||*|
 \`\`\``;
 
-    const processor = remark().use(remarkSvguitar, {
+    const processor = remark().use(remarkGuitarChart, {
       skipOnMissing: true,
     });
 
@@ -368,11 +330,11 @@ describe("Multiple chord support", () => {
   });
 
   test("should handle empty array gracefully", async () => {
-    const input = `\`\`\`svguitar
-[]
+    const input = `\`\`\`guitar-chart
+
 \`\`\``;
 
-    const processor = remark().use(remarkSvguitar, {
+    const processor = remark().use(remarkGuitarChart, {
       skipOnMissing: true,
     });
 
@@ -384,23 +346,20 @@ describe("Multiple chord support", () => {
   });
 
   test("should handle mixed valid and invalid chords in array", async () => {
-    const input = `\`\`\`svguitar
-[
-  {
-    "fingers": [
-      [1, 3, "3"],
-      [2, 2, "2"]
-    ],
-    "title": "Valid Chord"
-  },
-  {
-    "fingers": "invalid",
-    "title": "Invalid Chord"
-  }
-]
+    const input = `\`\`\`guitar-chart
+  D
+  ######
+  xoo
+  ------
+  ||||||
+  |||o|o
+  ||||*|
+
+
+  INVALID CHORD DATA
 \`\`\``;
 
-    const processor = remark().use(remarkSvguitar, {
+    const processor = remark().use(remarkGuitarChart, {
       skipOnMissing: true,
       errorInline: true,
     });

@@ -1,13 +1,6 @@
-# Music-MD
+# remark music plugins
 
-A markdown renderer that converts markdown files to HTML or PDF with music notation support. Features specialized extensions for LilyPond musical notation and guitar fretboard diagrams.
-
-## Features
-
-- **Multiple Output Formats**: Generate static HTML or PDF from markdown
-- **PDF Features**: Automatic page numbering and support for manual page breaks
-- **Music Notation**: Two specialized markdown extensions for musical content
-- **Modern JavaScript**: Written in plain JavaScript with TypeScript definitions generated from JSDoc comments
+Remark plugins to insert music notation and guitar fretboard chart in markdown files
 
 ## Markdown Extensions
 
@@ -36,33 +29,29 @@ The plugin will:
 - Compile the LilyPond code to SVG using the LilyPond CLI
 - Embed the resulting SVG as inline images in your output
 
-### Guitar Fretboard Diagrams
+### Guitar Fretboard Charts
 
-The svguitar extension uses the [svguitar library](https://github.com/omnibrain/svguitar) to render guitar fretboard diagrams:
+The svguitar extension uses the [svguitar library](https://github.com/omnibrain/svguitar) and [Text Guitar Chart](https://github.com/sithmel/text-guitar-chart) to render guitar fretboard diagrams:
 
 ````markdown
-```svguitar
-{
-  "fingers": [
-    [1, 2],
-    [2, 1],
-    [3, 2],
-    [4, 3],
-    [5, 1],
-    [6, "x"]
-  ],
-  "barres": [],
-  "title": "C Major"
-}
+```guitar-charts
+  A min
+  ######
+  oo   o
+  ------
+  ||||o|
+  ||o*||
+  ||||||
+
+  D
+  ######
+  xoo
+  ------
+  ||||||
+  |||o|o
+  ||||*|
 ```
 ````
-
-The plugin will:
-
-- Detect fenced code blocks with the `svguitar` language identifier
-- Parse the JSON chord data within the block
-- Render the chord diagram using SVGuitar and Puppeteer (headless Chrome)
-- Embed the resulting SVG as inline images in your output
 
 ## Installation
 
@@ -80,21 +69,6 @@ To install LilyPond:
 
 For guitar chord rendering, the plugin uses Puppeteer which will automatically download a suitable version of Chromium. No additional installation is required.
 
-### Setup
-
-1. Clone the repository:
-
-```bash
-git clone <repository-url>
-cd music-md
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
-
 ## Usage
 
 ### Basic Usage
@@ -103,11 +77,11 @@ npm install
 import { remark } from "remark";
 import remarkHtml from "remark-html";
 import remarkLilypond from "./plugins/remark-lilypond/index.js";
-import remarkSvguitar from "./plugins/remark-svguitar/index.js";
+import remarkGuitarChart from "./plugins/remark-guitar-chart/index.js";
 
 const processor = remark()
   .use(remarkLilypond)
-  .use(remarkSvguitar)
+  .use(remarkGuitarChart)
   .use(remarkHtml, { sanitize: false }); // Required: Allow raw HTML/SVG for musical notation
 
 const result = await processor.process(markdownContent);
@@ -129,10 +103,10 @@ const processor = remark().use(remarkLilypond, {
 });
 ```
 
-#### SVGuitar Plugin Options
+#### GuitarChart Plugin Options
 
 ```javascript
-const processor = remark().use(remarkSvguitar, {
+const processor = remark().use(remarkGuitarChart, {
   errorInline: false, // Show errors inline vs console
   skipOnMissing: false, // Skip processing if Puppeteer fails to launch
   puppeteerOptions: {
@@ -160,42 +134,6 @@ This will process `demo/example.md` and generate `demo/output.html` with rendere
 - `npm test` - Run tests using Node.js test runner
 - `npm run format` - Format code using Prettier (no semicolons)
 - `npm run types` - Generate TypeScript definitions from JSDoc comments
-
-### Project Structure
-
-```
-music-md/
-├── plugins/
-│   ├── remark-lilypond/
-│   │   └── index.js           # LilyPond plugin implementation
-│   └── remark-svguitar/
-│       └── index.js           # SVGuitar plugin implementation
-├── test/
-│   ├── remark-lilypond.test.js # LilyPond plugin tests
-│   └── remark-svguitar.test.js # SVGuitar plugin tests
-├── demo/
-│   ├── demo.js                # Demo script
-│   └── example.md             # Example markdown
-├── package.json
-└── README.md
-```
-
-### Code Style
-
-- **Language**: Plain JavaScript with JSDoc comments for TypeScript types
-- **Testing**: Node.js built-in test runner
-- **Formatting**: Prettier with no ending semicolons
-- **Types**: TypeScript definitions generated from JSDoc comments
-
-Functions should include comprehensive JSDoc comments with TypeScript type annotations.
-
-## PDF Features (Coming Soon)
-
-When generating PDFs, the following features will be supported:
-
-- Automatic page numbering
-- Manual page breaks using a special markdown syntax
-- Proper handling of musical notation across page boundaries
 
 ## Contributing
 
@@ -269,134 +207,10 @@ const processor = remark().use(remarkLilypond, {
 });
 ```
 
-### SVGuitar Chord Data Format
+### GuitarChart Chord Data Format
 
-The SVGuitar plugin expects JSON chord data in the following format:
+The GuitarChart plugin expects uses the syntax described [here](https://github.com/sithmel/text-guitar-chart)
 
-```javascript
-{
-  "fingers": [
-    [stringNumber, fretNumber, "fingerText"],
-    [1, 3, "3"],  // String 1, Fret 3, Label "3"
-    [2, 2, "2"],  // String 2, Fret 2, Label "2"
-    [3, 0],       // String 3, Open (no label)
-    [4, 0],       // String 4, Open
-    [5, 1, "1"],  // String 5, Fret 1, Label "1"
-    [6, "x"]      // String 6, Muted
-  ],
-  "barres": [     // Optional: barre chords
-    {
-      "fromString": 6,
-      "toString": 1,
-      "fret": 1,
-      "text": "1"
-    }
-  ],
-  "title": "C Major",  // Optional: chord name
-  "position": 3       // Optional: fret position indicator
-}
-```
-
-**Finger Position Format:**
-
-- `[string, fret]` - Basic finger position
-- `[string, fret, "text"]` - With finger number/label
-- `[string, "x"]` - Muted string
-- `[string, 0]` - Open string
-
-**Advanced Styling:**
-
-```javascript
-
-### Multiple Chords In One Block
-
-You can render multiple chord diagrams from a single fenced block by providing an array of chord objects instead of a single object. Each array element follows the same schema (fingers, optional barres, title, position, styling) and produces its own SVG.
-
-````markdown
-```svguitar
-[
-  {
-    "title": "C",
-    "fingers": [
-      [1, 0], [2, 1, "1"], [3, 0], [4, 2, "2"], [5, 3, "3"], [6, "x"]
-    ]
-  },
-  {
-    "title": "G",
-    "fingers": [
-      [1, 3, "3"], [2, 0], [3, 0], [4, 0], [5, 2, "1"], [6, 3, "2"]
-    ]
-  },
-  {
-    "title": "F",
-    "barres": [{ "fromString": 6, "toString": 1, "fret": 1, "text": "1" }],
-    "fingers": [
-      [5, 3, "3"], [4, 3, "4"], [3, 2, "2"], [2, 1], [1, 1], [6, 1]
-    ]
-  }
-]
-```
-````
-
-Notes:
-- A top-level JSON array is the simplest form.
-- (Optional) A wrapper object like `{ "chords": [ ... ] }` can also be supported if desired; prefer the plain array for brevity.
-- If one chord fails to render (e.g. invalid JSON for that element), other chords are still processed. With `errorInline: true`, the failed chord's slot will display an inline error message.
-
-{
-  "fingers": [
-    [1, 2, { "text": "2", "color": "#ff6b6b" }],
-    [2, 3, { "text": "3", "color": "#4ecdc4" }]
-  ]
-}
-```
-
-### SVGuitar Puppeteer Errors
-
-If you encounter errors with SVGuitar rendering:
-
-**Common Issues:**
-
-1. **Puppeteer fails to launch**: Usually due to missing Chrome/Chromium dependencies
-2. **JSON parsing errors**: Invalid JSON format in svguitar code blocks
-3. **Timeout errors**: Browser takes too long to render the chord
-
-**Solutions:**
-
-1. **Install Chrome dependencies** (Linux):
-
-   ```bash
-   sudo apt-get install -y libgbm-dev
-   ```
-
-2. **Use skipOnMissing option** in CI environments:
-
-   ```javascript
-   const processor = remark().use(remarkSvguitar, {
-     skipOnMissing: true, // Skip blocks if Puppeteer fails
-   });
-   ```
-
-3. **Configure Puppeteer options**:
-   ```javascript
-   const processor = remark().use(remarkSvguitar, {
-     puppeteerOptions: {
-       headless: true,
-       args: [
-         "--no-sandbox",
-         "--disable-setuid-sandbox",
-         "--disable-dev-shm-usage",
-       ],
-     },
-   });
-   ```
-
-### Performance Tips
-
-- Use shorter timeout values for faster failure on invalid code
-- Enable `skipOnMissing: true` in CI environments where LilyPond or Puppeteer may not be available
-- Cache compiled results if processing the same content repeatedly
-- The SVGuitar plugin reuses a single browser instance across all chord renderings for better performance
 
 ### HTML Sanitization
 
@@ -418,7 +232,7 @@ import rehypeStringify from "rehype-stringify";
 
 const processor = remark()
   .use(remarkLilypond)
-  .use(remarkSvguitar)
+  .use(remarkGuitarChart)
   .use(remarkRehype, { allowDangerousHtml: true })
   .use(rehypeRaw)
   .use(rehypeStringify);
@@ -433,7 +247,7 @@ import { remark } from "remark";
 import remarkHtml from "remark-html";
 import {
   remarkLilypond,
-  remarkSvguitar,
+  remarkGuitarChart,
   closeBrowser,
   type LilyPondOptions,
   type SVGuitarOptions,
@@ -444,7 +258,7 @@ const svguitarOptions: SVGuitarOptions = { keepAlive: true };
 
 const processor = remark()
   .use(remarkLilypond, lilyOptions)
-  .use(remarkSvguitar, svguitarOptions)
+  .use(remarkGuitarChart, svguitarOptions)
   .use(remarkHtml, { sanitize: false });
 
 const result = await processor.process(markdown);
@@ -459,7 +273,7 @@ The `keepAlive` option (default `false`) trades memory for speed across multiple
 
 ```js
 const processor = remark()
-  .use(remarkSvguitar, { keepAlive: true })
+  .use(remarkGuitarChart, { keepAlive: true })
   .use(remarkHtml, { sanitize: false });
 
 for (const file of files) {

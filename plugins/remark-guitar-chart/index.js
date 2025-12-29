@@ -8,6 +8,8 @@ import puppeteer from "puppeteer";
 import { readFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import {splitStringInRectangles, stringToFingering} from 'text-guitar-chart'
+import { remark } from "remark";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -48,16 +50,6 @@ function getSvguitarLibrary() {
   return svguitarLibrary;
 }
 
-/**
- * Normalize chord data to ensure consistent structure
- * @param {Object[]} chordData
- * @returns
- */
-function normaliseChordData(chordData) {
-  // Ensure all chord objects have the same structure
-  return chordData.map((chord) => ({ barres: chord.barres || [], ...chord }));
-}
-
 function adaptConfigToChord(chord, defaultConfig) {
   const frets = Math.max(
     ...chord.fingers.map((f) => (typeof f[1] === "number" ? f[1] : 0)),
@@ -71,7 +63,7 @@ function adaptConfigToChord(chord, defaultConfig) {
  * @param {SVGuitarOptions} [options={}] - Plugin configuration options
  * @returns {(tree: import('unist').Node) => Promise<void>} Unified transformer
  */
-function remarkSvguitar(options = {}) {
+function remarkGuitarChart(options = {}) {
   const {
     errorInline = false,
     skipOnMissing = false,
@@ -94,7 +86,7 @@ function remarkSvguitar(options = {}) {
       "code",
       /** @type {any} */ (
         (node, index, parent) => {
-          if (/** @type {any} */ (node).lang === "svguitar") {
+          if (/** @type {any} */ (node).lang === "guitar-chart") {
             codeBlocks.push({ node, index, parent });
           }
         }
@@ -140,19 +132,9 @@ function remarkSvguitar(options = {}) {
       const { node, index, parent } = codeBlocks[blockIndex];
       try {
         // Parse the chord data
-        let parsedData;
-        try {
-          parsedData = JSON.parse(node.value.trim());
-        } catch (parseError) {
-          throw new Error(
-            `Invalid JSON in SVGuitar block: ${parseError.message}`,
-          );
-        }
+        const rectangles = splitStringInRectangles(node.value.trim());
+        const chordDataArray = rectangles.map(rect => stringToFingering(rect)).filter(fingering => fingering !== null);
 
-        // Normalize to array format (single chord or multiple chords)
-        const chordDataArray = normaliseChordData(
-          Array.isArray(parsedData) ? parsedData : [parsedData],
-        );
 
         const SVGuitarConfigArray = chordDataArray.map((chord) =>
           adaptConfigToChord(chord, SVGuitarConfig),
@@ -488,4 +470,4 @@ process.on("SIGTERM", async () => {
   process.exit(0);
 });
 
-export default remarkSvguitar;
+export default remarkGuitarChart;

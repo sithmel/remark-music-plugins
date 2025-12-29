@@ -7,9 +7,9 @@ import { readFile, writeFile } from "fs/promises";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
 import remarkLilypond from "../plugins/remark-lilypond/index.js";
-import remarkSvguitar, {
+import remarkGuitarChart, {
   closeBrowser,
-} from "../plugins/remark-svguitar/index.js";
+} from "../plugins/remark-guitar-chart/index.js";
 
 /**
  * Main demo function
@@ -29,7 +29,7 @@ async function runDemo() {
         errorInline: true,
         skipOnMissing: true, // Skip if LilyPond not available
       })
-      .use(remarkSvguitar, {
+      .use(remarkGuitarChart, {
         errorInline: true,
         skipOnMissing: true, // Skip if Puppeteer not available
       })
@@ -120,9 +120,9 @@ ${result.toString()}
 
     // Show some stats
     const lilypondBlocks = (markdownContent.match(/```lilypond/g) || []).length;
-    const svguitarBlocks = (markdownContent.match(/```svguitar/g) || []).length;
+    const guitarChartBlocks = (markdownContent.match(/```guitar-chart/g) || []).length;
     console.log(
-      `\nProcessed ${lilypondBlocks} LilyPond code blocks and ${svguitarBlocks} SVGuitar code blocks.`,
+      `\nProcessed ${lilypondBlocks} LilyPond code blocks and ${guitarChartBlocks} Guitar Chart code blocks.`,
     );
   } catch (err) {
     // Normalize unknown exceptions so we can safely read .message

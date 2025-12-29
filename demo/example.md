@@ -1,6 +1,6 @@
 # Music Notation Demo
 
-This document demonstrates both the LilyPond and SVGuitar integrations in music-md.
+This document demonstrates both the LilyPond and guitar-chart integrations in music-md.
 
 ## Simple Melody
 
@@ -59,75 +59,59 @@ And here's a corresponding bass line:
 
 Here are some common guitar chord diagrams:
 
-### C Major Chord
+### A Minor Chord
 
-```svguitar
-{
-  "fingers": [
-    [1, 3, "3"],
-    [2, 1, "1"],
-    [3, 0],
-    [4, 2, "2"],
-    [5, 3, "3"],
-    [6, "x"]
-  ],
-  "title": "C Major",
-  "position": 1
-}
+```guitar-chart
+
+  A minor
+  ‾‾‾‾‾‾‾‾‾‾‾
+  ○ ○       ○
+  ╒═╤═╤═╤═╤═╕
+  │ │ │ │ ○ │
+  ├─┼─┼─┼─┼─┤
+  │ │ ○ ● │ │
+  ├─┼─┼─┼─┼─┤
+  │ │ │ │ │ │
+  └─┴─┴─┴─┴─┘
 ```
 
-### F Major Barre Chord
+### D Major Chord
 
-```svguitar
-{
-  "fingers": [
-    [1, 1],
-    [2, 1],
-    [3, 3, "3"],
-    [4, 3, "4"],
-    [5, 2, "2"],
-    [6, 1]
-  ],
-  "barres": [
-    {
-      "fromString": 6,
-      "toString": 1,
-      "fret": 1,
-      "text": "1"
-    }
-  ],
-  "title": "F Major",
-  "position": 1
-}
+```guitar-chart
+  D
+  ‾‾‾‾‾‾‾‾‾‾‾
+  × ○ ○
+  ╒═╤═╤═╤═╤═╕
+  │ │ │ │ │ │
+  ├─┼─┼─┼─┼─┤
+  │ │ │ ○ │ ○
+  ├─┼─┼─┼─┼─┤
+  │ │ │ │ ● │
+  └─┴─┴─┴─┴─┘
 ```
 
-### G Major Chord
+### G 7 Chord
 
-```svguitar
-{
-  "fingers": [
-    [1, 3, "3"],
-    [5, 2, "2"],
-    [6, 3, "4"]
-  ],
-  "title": "G Major"
-}
+```guitar-chart
+  G 7
+  ######
+  xx
+  ------
+ 5||*|||
+  ||||o|
+  |||o|o
 ```
 
 ### Complex Chord Example
 
-```svguitar
-{
-  "fingers": [
-    [1, 2, { "text": "2", "color": "#ff6b6b" }],
-    [2, 3, { "text": "3", "color": "#4ecdc4" }],
-    [3, 4, { "text": "4", "color": "#45b7d1" }],
-    [4, 2, { "text": "1", "color": "#96ceb4" }],
-    [5, "x"],
-    [6, "x"]
-  ],
-  "title": "Custom Styled Chord"
-}
+```guitar-chart
+  E dom 7
+  #######
+  x    x
+  ------
+  |||3||
+  |51|||
+  ||||7|
 ```
 
 ## Multiple Chords in One Block
@@ -136,74 +120,57 @@ You can also display multiple chord diagrams together by using an array:
 
 ### Common Chord Progression (C-Am-F-G)
 
-```svguitar
-[
-  {
-    "fingers": [
-      [1, 3, "3"],
-      [2, 2, "2"],
-      [5, 1, "1"]
-    ],
-    "title": "C Major"
-  },
-  {
-    "fingers": [
-      [2, 2, "2"],
-      [3, 2, "3"],
-      [4, 2, "4"]
-    ],
-    "title": "A Minor"
-  },
-  {
-    "fingers": [
-      [1, 1],
-      [2, 1],
-      [3, 3, "3"],
-      [4, 3, "4"],
-      [5, 2, "2"],
-      [6, 1]
-    ],
-    "barres": [
-      {
-        "fromString": 6,
-        "toString": 1,
-        "fret": 1,
-        "text": "1"
-      }
-    ],
-    "title": "F Major",
-    "position": 1
-  },
-  {
-    "fingers": [
-      [1, 3, "3"],
-      [5, 2, "2"],
-      [6, 3, "4"]
-    ],
-    "title": "G Major"
-  }
-]
+```guitar-chart
+  G 7
+  ######
+  xx
+  ------
+ 5||*|||
+  ||||o|
+  |||o|o
+
+  E dom 7
+  #######
+  x    x
+  ------
+  |||3||
+  |51|||
+  ||||7|
+
+  Dominant 7
+  ##########
+  xx
+  ======
+  ||*|||
+  ||||o|
+  |||o|o
 ```
 
 ### Power Chord Sequence
 
-```svguitar
-[
-  {
-    "fingers": [
-      [5, 3, "1"],
-      [6, 3, "1"]
-    ],
-    "title": "A5"
-  },
-  {
-    "fingers": [
-      [4, 3, "1"],
-      [5, 3, "1"]
-    ],
-    "title": "D5"
-  }
-]
+```guitar-chart
+  G 7
+  ‾‾‾‾‾‾‾‾‾‾‾
+  × ×
+  ┌─┬─┬─┬─┬─┐
+ 5│ │ ● │ │ │
+  ├─┼─┼─┼─┼─┤
+  │ │ │ │ ○ │
+  ├─┼─┼─┼─┼─┤
+  │ │ │ ○ │ ○
+  └─┴─┴─┴─┴─┘
+
+  E dom 7
+  ‾‾‾‾‾‾‾‾‾‾‾
+  ×         ×
+  ┌─┬─┬─┬─┬─┐
+  │ │ │ 3 │ │
+  ├─┼─┼─┼─┼─┤
+  │ 5 1 │ │ │
+  ├─┼─┼─┼─┼─┤
+  │ │ │ │ 7 │
+  └─┴─┴─┴─┴─┘
+
 ```
 
-This markdown file can be processed by both the remark-lilypond and remark-svguitar plugins to generate HTML with embedded SVG musical notation and guitar chord diagrams.
+This markdown file can be processed by both the remark-lilypond and remark-guitar-chart plugins to generate HTML with embedded SVG musical notation and guitar chord diagrams.

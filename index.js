@@ -4,9 +4,9 @@
  */
 
 import remarkLilypond from "./plugins/remark-lilypond/index.js";
-import remarkSvguitar, {
+import remarkGuitarChart, {
   closeBrowser,
-} from "./plugins/remark-svguitar/index.js";
+} from "./plugins/remark-guitar-chart/index.js";
 
 /**
  * Remark plugin for converting LilyPond code blocks to inline SVG
@@ -16,18 +16,18 @@ export { default as remarkLilypond } from "./plugins/remark-lilypond/index.js";
 
 /**
  * Remark plugin for converting SVGuitar code blocks to inline SVG
- * @type {import("./plugins/remark-svguitar/index.js").default}
+ * @type {import("./plugins/remark-guitar-chart/index.js").default}
  */
 export {
-  default as remarkSvguitar,
+  default as remarkGuitarChart,
   closeBrowser,
-} from "./plugins/remark-svguitar/index.js";
+} from "./plugins/remark-guitar-chart/index.js";
 
 /**
  * Default export containing both plugins
  */
 export default {
   remarkLilypond,
-  remarkSvguitar,
+  remarkGuitarChart,
   closeBrowser,
 };

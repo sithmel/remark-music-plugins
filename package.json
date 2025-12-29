@@ -1,7 +1,7 @@
 {
-  "name": "music-md",
+  "name": "remark-music-plugins",
   "version": "0.0.2",
-  "description": "A markdown renderer that converts markdown files to HTML or PDF with music notation support",
+  "description": "remark plugins to insert music notation and guitar fretboard chart in markdown files",
   "main": "index.js",
   "types": "types/index.d.ts",
   "type": "module",
@@ -22,18 +22,18 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sithmel/music-md.git"
+    "url": "git+https://github.com/sithmel/remark-music-plugins.git"
   },
   "bugs": {
-    "url": "https://github.com/sithmel/music-md/issues"
+    "url": "https://github.com/sithmel/remark-music-plugins/issues"
   },
-  "homepage": "https://github.com/sithmel/music-md#readme",
+  "homepage": "https://github.com/sithmel/remark-music-plugins#readme",
   "dependencies": {
     "lilynode": "^0.5.2",
     "puppeteer": "^24.22.0",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
-    "svguitar": "^2.4.1",
+    "text-guitar-chart": "^0.0.2",
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
