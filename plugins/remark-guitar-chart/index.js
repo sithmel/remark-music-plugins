@@ -132,7 +132,7 @@ function remarkGuitarChart(options = {}) {
       const { node, index, parent } = codeBlocks[blockIndex];
       try {
         // Parse the chord data
-        const rectangles = splitStringInRectangles(node.value.trim());
+        const rectangles = splitStringInRectangles(node.value);
         const chordDataArray = rectangles.map(rect => stringToFingering(rect)).filter(fingering => fingering !== null);
 
 

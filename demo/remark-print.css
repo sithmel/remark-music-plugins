@@ -1,0 +1,20 @@
+/* Reset and Base Print Styles */
+* {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+body > * {
+    page-break-inside: avoid;
+}
+
+/* Ensure important sections don't break awkwardly */
+h1, h2, h3 {
+    page-break-after: avoid;
+}
+
+p, li {
+    orphans: 2;
+    widows: 2;
+}

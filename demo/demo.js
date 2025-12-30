@@ -47,64 +47,8 @@ async function runDemo() {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music-MD Demo</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        .lilypond-error, .svguitar-error {
-            background-color: #ffebee;
-            color: #c62828;
-            padding: 10px;
-            border-left: 4px solid #f44336;
-            margin: 10px 0;
-            border-radius: 4px;
-        }
-        svg {
-            max-width: 100%;
-            height: auto;
-        }
-        .chord-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            max-width: 100%;
-            gap: 20px;
-            align-items: start;
-            justify-content: center;
-        }
-        @supports not (display: grid) {
-            .chord-container {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 20px;
-                align-items: flex-start;
-            }
-        }
-        .chord-container:has(.chord-item:nth-child(2)) {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        .chord-container:has(.chord-item:nth-child(3)) {
-            grid-template-columns: repeat(3, 1fr);
-        }
-        .chord-container:has(.chord-item:nth-child(4)) {
-            grid-template-columns: repeat(4, 1fr);
-        }
-        .chord-container:has(.chord-item:nth-child(5)) {
-            grid-template-columns: repeat(4, 1fr);
-        }
-        pre {
-            background-color: #f5f5f5;
-            padding: 15px;
-            border-radius: 4px;
-            overflow-x: auto;
-        }
-        h1, h2 {
-            color: #333;
-        }
-    </style>
+    <link href="remark.css" rel="stylesheet" />
+    <link href="remark-print.css" rel="stylesheet" media="print" />
 </head>
 <body>
 ${result.toString()}

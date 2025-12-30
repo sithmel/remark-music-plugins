@@ -62,7 +62,6 @@ Here are some common guitar chord diagrams:
 ### A Minor Chord
 
 ```guitar-chart
-
   A minor
   ‾‾‾‾‾‾‾‾‾‾‾
   ○ ○       ○
@@ -75,7 +74,7 @@ Here are some common guitar chord diagrams:
   └─┴─┴─┴─┴─┘
 ```
 
-### D Major Chord
+### D Major Chord and G 7 Chord
 
 ```guitar-chart
   D
@@ -88,11 +87,7 @@ Here are some common guitar chord diagrams:
   ├─┼─┼─┼─┼─┤
   │ │ │ │ ● │
   └─┴─┴─┴─┴─┘
-```
 
-### G 7 Chord
-
-```guitar-chart
   G 7
   ######
   xx
@@ -112,6 +107,25 @@ Here are some common guitar chord diagrams:
   |||3||
   |51|||
   ||||7|
+
+  D
+  ‾‾‾‾‾‾‾‾‾‾‾
+  × ○ ○
+  ╒═╤═╤═╤═╤═╕
+  │ │ │ │ │ │
+  ├─┼─┼─┼─┼─┤
+  │ │ │ ○ │ ○
+  ├─┼─┼─┼─┼─┤
+  │ │ │ │ ● │
+  └─┴─┴─┴─┴─┘
+
+  G 7
+  ######
+  xx
+  ------
+ 5||*|||
+  ||||o|
+  |||o|o
 ```
 
 ## Multiple Chords in One Block
@@ -144,11 +158,64 @@ You can also display multiple chord diagrams together by using an array:
   ||*|||
   ||||o|
   |||o|o
+
+  E dom 7
+  #######
+  x    x
+  ------
+  |||3||
+  |51|||
+  ||||7|
+
 ```
 
 ### Power Chord Sequence
 
 ```guitar-chart
+  G 7
+  ‾‾‾‾‾‾‾‾‾‾‾
+  × ×
+  ┌─┬─┬─┬─┬─┐
+ 5│ │ ● │ │ │
+  ├─┼─┼─┼─┼─┤
+  │ │ │ │ ○ │
+  ├─┼─┼─┼─┼─┤
+  │ │ │ ○ │ ○
+  └─┴─┴─┴─┴─┘
+
+  E dom 7
+  ‾‾‾‾‾‾‾‾‾‾‾
+  ×         ×
+  ┌─┬─┬─┬─┬─┐
+  │ │ │ 3 │ │
+  ├─┼─┼─┼─┼─┤
+  │ 5 1 │ │ │
+  ├─┼─┼─┼─┼─┤
+  │ │ │ │ 7 │
+  └─┴─┴─┴─┴─┘
+
+  G 7
+  ‾‾‾‾‾‾‾‾‾‾‾
+  × ×
+  ┌─┬─┬─┬─┬─┐
+ 5│ │ ● │ │ │
+  ├─┼─┼─┼─┼─┤
+  │ │ │ │ ○ │
+  ├─┼─┼─┼─┼─┤
+  │ │ │ ○ │ ○
+  └─┴─┴─┴─┴─┘
+
+  E dom 7
+  ‾‾‾‾‾‾‾‾‾‾‾
+  ×         ×
+  ┌─┬─┬─┬─┬─┐
+  │ │ │ 3 │ │
+  ├─┼─┼─┼─┼─┤
+  │ 5 1 │ │ │
+  ├─┼─┼─┼─┼─┤
+  │ │ │ │ 7 │
+  └─┴─┴─┴─┴─┘
+
   G 7
   ‾‾‾‾‾‾‾‾‾‾‾
   × ×

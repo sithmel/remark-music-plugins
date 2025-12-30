@@ -79,7 +79,7 @@ function remarkLilypond(options = {}) {
         // Replace the code block with an image node containing inline SVG
         parent.children[index] = {
           type: "html",
-          value: svgContent,
+          value: `<div class="lilypond-svg">${svgContent}</div>`,
         };
       } catch (error) {
         const errorMessage = parseLilyPondError(error.message);
