@@ -1,6 +1,6 @@
 {
   "name": "remark-music-plugins",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "remark plugins to insert music notation and guitar fretboard chart in markdown files",
   "main": "index.js",
   "types": "types/index.d.ts",
