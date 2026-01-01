@@ -117,6 +117,82 @@ const processor = remark().use(remarkGuitarChart, {
 });
 ```
 
+### Using the Markdown Renderer
+
+The package includes a convenient `renderer()` function that processes markdown files and generates complete HTML output with embedded styles:
+
+```javascript
+import renderer from "./markdownRenderer/index.js";
+
+// Process a markdown file and generate HTML
+await renderer("input.md", "output.html");
+```
+
+**Features:**
+
+- Automatically applies both LilyPond and GuitarChart plugins
+- Generates complete HTML document with embedded CSS styles
+- Includes both screen and print stylesheets
+- Handles errors gracefully with helpful error messages
+- Automatically cleans up browser resources
+
+**Default Configuration:**
+
+The renderer uses these plugin settings by default:
+- `errorInline: true` - Shows errors inline in the generated HTML
+- `skipOnMissing: true` - Continues processing even if LilyPond or Puppeteer are unavailable
+- `sanitize: false` - Allows raw SVG/HTML output (required for musical notation)
+
+**Example:**
+
+```javascript
+import renderer from "./markdownRenderer/index.js";
+
+// Convert markdown with musical notation to HTML
+await renderer("./songs/my-song.md", "./output/my-song.html");
+```
+
+The generated HTML file will include all rendered musical notation and guitar charts, with styling optimized for both screen display and printing.
+
+### Command Line Tool
+
+The package includes a CLI tool that processes markdown from stdin and outputs HTML to stdout:
+
+```bash
+# Process a markdown file
+markdown-music-renderer < input.md > output.html
+
+# Or pipe from another command
+cat songs/my-song.md | markdown-music-renderer > my-song.html
+
+# Using with node (before installing globally)
+node cli.js < input.md > output.html
+```
+
+**Features:**
+
+- Reads markdown from stdin
+- Writes complete HTML with embedded styles to stdout
+- Includes both LilyPond and GuitarChart processing
+- Error messages go to stderr, keeping stdout clean
+- Same configuration as `markdownRenderer()` (errorInline: true, skipOnMissing: true)
+
+**Installation:**
+
+After installing the package globally, the `markdown-music-renderer` command will be available:
+
+```bash
+npm install -g remark-music-plugins
+markdown-music-renderer < input.md > output.html
+```
+
+Or use it locally in your project:
+
+```bash
+npm install remark-music-plugins
+npx markdown-music-renderer < input.md > output.html
+```
+
 ### Running the Demo
 
 Try the included demo to see the plugin in action:

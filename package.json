@@ -5,6 +5,9 @@
   "main": "index.js",
   "types": "types/index.d.ts",
   "type": "module",
+  "bin": {
+    "markdown-music-renderer": "./cli.js"
+  },
   "scripts": {
     "test": "node --test test/*.test.js",
     "format": "prettier --write .",

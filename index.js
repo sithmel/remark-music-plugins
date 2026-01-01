@@ -4,6 +4,8 @@
  */
 
 import remarkLilypond from "./plugins/remark-lilypond/index.js";
+import {markdownRenderer} from "./markdownRenderer/index.js";
+
 import remarkGuitarChart, {
   closeBrowser,
 } from "./plugins/remark-guitar-chart/index.js";
@@ -30,4 +32,5 @@ export default {
   remarkLilypond,
   remarkGuitarChart,
   closeBrowser,
+  markdownRenderer
 };

@@ -13,6 +13,6 @@
     "strict": false,
     "moduleResolution": "node"
   },
-  "include": ["*.js", "plugins/**/*.js"],
+  "include": ["*.js", "plugins/**/*.js", "markdownRenderer/**/*.js"],
   "exclude": ["node_modules", "types", "test/**/*", "demo/**/*"]
 }
