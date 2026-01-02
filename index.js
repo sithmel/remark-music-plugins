@@ -3,12 +3,6 @@
  * @fileoverview Main entry point for music-md package exposing remark plugins
  */
 
-import remarkLilypond from "./plugins/remark-lilypond/index.js";
-import {markdownRenderer} from "./markdownRenderer/index.js";
-
-import remarkGuitarChart, {
-  closeBrowser,
-} from "./plugins/remark-guitar-chart/index.js";
 
 /**
  * Remark plugin for converting LilyPond code blocks to inline SVG
@@ -25,12 +19,4 @@ export {
   closeBrowser,
 } from "./plugins/remark-guitar-chart/index.js";
 
-/**
- * Default export containing both plugins
- */
-export default {
-  remarkLilypond,
-  remarkGuitarChart,
-  closeBrowser,
-  markdownRenderer
-};
+export {markdownRenderer} from "./markdownRenderer/index.js";

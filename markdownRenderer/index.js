@@ -7,7 +7,7 @@ import remarkGuitarChart, {
   closeBrowser,
 } from "../plugins/remark-guitar-chart/index.js";
 import { readFileSync } from "fs";
-import { join } from "path";
+import { join, basename, extname } from "path";
 
 const thisFolder = new URL(".", import.meta.url).pathname;
 const css = readFileSync(join(thisFolder, "remark.css"), "utf8");
@@ -16,9 +16,10 @@ const printCss = readFileSync(join(thisFolder, "remark-print.css"), "utf8");
 /**
  * Process markdown content with music notation plugins
  * @param {string} markdownContent - The markdown content to process
+ * @param {string} [title=""] - Optional title for the HTML document
  * @returns {Promise<string>} The generated HTML output
  */
-async function processMarkdown(markdownContent) {
+async function processMarkdown(markdownContent, title = "") {
   try {
     // Create processor with plugins
     const processor = remark()
@@ -42,7 +43,7 @@ async function processMarkdown(markdownContent) {
   <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Music-MD Demo</title>
+      <title>${title}</title>
       <style>${css}</style>
       <style media="print">${printCss}</style>
   </head>
@@ -89,7 +90,7 @@ export async function markdownRenderer(inputFilePath, outputFilePath) {
   const markdownContent = await readFile(inputFilePath, "utf8");
   console.log("✓ Read markdown file");
 
-  const htmlOutput = await processMarkdown(markdownContent);
+  const htmlOutput = await processMarkdown(markdownContent, basename(inputFilePath, extname(inputFilePath)));
 
   await writeFile(outputFilePath, htmlOutput, "utf8");
   console.log(`✓ Generated ${outputFilePath}`);
