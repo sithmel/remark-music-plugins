@@ -9,10 +9,8 @@ import { readFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import {splitStringInRectangles, stringToFingering} from 'text-guitar-chart'
-import { remark } from "remark";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const svguitarLibraryPath = fileURLToPath(await import.meta.resolve('svguitar'));
 
 /**
  * @typedef {Object} SVGuitarOptions
@@ -36,11 +34,7 @@ let svguitarLibrary = null;
 function getSvguitarLibrary() {
   if (!svguitarLibrary) {
     try {
-      const svguitarPath = join(
-        __dirname,
-        "../../node_modules/svguitar/dist/svguitar.umd.js",
-      );
-      svguitarLibrary = readFileSync(svguitarPath, "utf8");
+      svguitarLibrary = readFileSync(svguitarLibraryPath, "utf8");
     } catch (error) {
       throw new Error(
         `Failed to read svguitar library from node_modules: ${error.message}. Make sure svguitar is installed via npm.`,
