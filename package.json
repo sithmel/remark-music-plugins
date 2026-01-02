@@ -36,7 +36,7 @@
     "puppeteer": "^24.22.0",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
-    "text-guitar-chart": "^0.0.2",
+    "text-guitar-chart": "^0.0.4",
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
