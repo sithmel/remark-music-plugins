@@ -239,7 +239,7 @@ You can also display multiple chord diagrams together by using an array:
   └─┴─┴─┴─┴─┘
 
 ```
-
+## pentatonic scales
 ```guitar-chart
   ┌─┬─┬─┬─┬─┐    ┌─┬─┬─┬─┬─┐    ┌─┬─┬─┬─┬─┐
   │ │ # │ │ │    │ │ │ │ # │    │ # │ │ │ │
