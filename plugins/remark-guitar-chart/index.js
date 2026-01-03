@@ -50,7 +50,8 @@ function adaptConfigToChord(chord, defaultConfig) {
     ...(chord.barres || []).map((b) => b.fret),
     3,
   );
-  return { ...defaultConfig, frets };
+  const noPosition = chord.position === undefined || chord.position === 0;
+  return { ...defaultConfig, frets, noPosition };
 }
 /**
  * Remark plugin to transform SVGuitar code blocks into inline SVG images
@@ -340,38 +341,6 @@ async function renderChordsWithPuppeteer(
     await page.close();
   }
 }
-
-// /**
-//  * Fixes SVG viewBox when height is zero by calculating actual content bounds
-//  * @param {string} svgContent - The SVG content string
-//  * @returns {string} Fixed SVG content
-//  */
-// function fixSvgViewBox(svgContent) {
-//   // Check if the viewBox has zero height
-//   const viewBoxMatch = svgContent.match(/viewBox="([^"]+)"/);
-//   if (!viewBoxMatch) {
-//     return svgContent; // No viewBox found, return as-is
-//   }
-
-//   const [x, y, width, height] = viewBoxMatch[1].split(' ').map(parseFloat);
-
-//   // If height is not zero, return as-is
-//   if (height > 0) {
-//     return svgContent;
-//   }
-
-//   // Calculate default height based on typical chord diagram proportions
-//   // Standard guitar chord diagram is roughly 1.2:1 aspect ratio (height:width)
-//   const calculatedHeight = width * 1.2;
-
-//   // Replace the viewBox with the calculated height
-//   const fixedViewBox = `viewBox="${x} ${y} ${width} ${calculatedHeight}"`;
-//   const fixedSvgContent = svgContent.replace(/viewBox="[^"]+"/, fixedViewBox);
-
-//   console.log(`Fixed SVG viewBox: ${viewBoxMatch[1]} -> ${x} ${y} ${width} ${calculatedHeight}`);
-
-//   return fixedSvgContent;
-// }
 
 /**
  * Fixes SVG viewBoxes for multiple SVGs in combined HTML content
