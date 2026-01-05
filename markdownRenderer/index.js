@@ -1,6 +1,7 @@
 //@ts-check
 import { readFile, writeFile } from "fs/promises";
 import { remark } from "remark";
+import remarkGfm from "remark-gfm";
 import remarkHtml from "remark-html";
 import remarkLilypond from "../plugins/remark-lilypond/index.js";
 import remarkGuitarChart, {
@@ -19,7 +20,7 @@ const printCss = readFileSync(join(thisFolder, "remark-print.css"), "utf8");
  * @param {string} [title=""] - Optional title for the HTML document
  * @returns {Promise<string>} The generated HTML output
  */
-async function processMarkdown(markdownContent, title = "") {
+async function processMarkdown(markdownContent, title = "", extraCss = "", paged = false) {
   try {
     // Create processor with plugins
     const processor = remark()
@@ -32,6 +33,7 @@ async function processMarkdown(markdownContent, title = "") {
         errorInline: true,
         skipOnMissing: true, // Skip if Puppeteer not available
       })
+      .use(remarkGfm)
       .use(remarkHtml, { sanitize: false }); // Allow raw HTML/SVG (needed for musical notation)
 
     // Process the markdown
@@ -46,6 +48,8 @@ async function processMarkdown(markdownContent, title = "") {
       <title>${title}</title>
       <style>${css}</style>
       <style media="print">${printCss}</style>
+      <style>${extraCss}</style>
+      ${paged ? '<script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>' : ''}
   </head>
   <body>
   ${result.toString()}
@@ -83,31 +87,20 @@ async function processMarkdown(markdownContent, title = "") {
  * Main demo function
  * @param {string} inputFilePath - Path to the input markdown file
  * @param {string} outputFilePath - Path to the output HTML file
+ * @param {object} options - Additional options
+ * @param {string} [options.title] - title for the HTML document
+ * @param {string} [options.css = ""] - additional css
+ * @param {boolean} [options.paged = false] - whether to include paged.js for pagination
  */
-export async function markdownRenderer(inputFilePath, outputFilePath) {
+export async function markdownRenderer(inputFilePath, outputFilePath, options = {}) {
+  const {title, css = "", paged = false} = options;
   console.log("Running Markdown Renderer...");
 
   const markdownContent = await readFile(inputFilePath, "utf8");
   console.log("✓ Read markdown file");
 
-  const htmlOutput = await processMarkdown(markdownContent, basename(inputFilePath, extname(inputFilePath)));
+  const htmlOutput = await processMarkdown(markdownContent, title ?? basename(inputFilePath, extname(inputFilePath)), css, paged);
 
   await writeFile(outputFilePath, htmlOutput, "utf8");
   console.log(`✓ Generated ${outputFilePath}`);
 }
-
-/**
- * Stream version that reads from stdin and writes to stdout
- * Logs go to stderr to keep stdout clean
- */
-export async function markdownRendererStream() {
-    // Read from stdin
-    const chunks = [];
-    for await (const chunk of process.stdin) {
-      chunks.push(chunk);
-    }
-    const markdownContent = Buffer.concat(chunks).toString("utf8");
-    const htmlOutput = await processMarkdown(markdownContent);
-    process.stdout.write(htmlOutput);
-}
-

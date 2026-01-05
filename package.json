@@ -5,9 +5,6 @@
   "main": "index.js",
   "types": "types/index.d.ts",
   "type": "module",
-  "bin": {
-    "markdown-music-renderer": "./cli.js"
-  },
   "scripts": {
     "test": "node --test test/*.test.js",
     "format": "prettier --write .",
@@ -35,8 +32,9 @@
     "lilynode": "^0.5.2",
     "puppeteer": "^24.22.0",
     "remark": "^15.0.1",
+    "remark-gfm": "^4.0.1",
     "remark-html": "^16.0.1",
-    "text-guitar-chart": "^0.1.1",
+    "text-guitar-chart": "^0.1.2",
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {

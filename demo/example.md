@@ -271,4 +271,48 @@ You can also display multiple chord diagrams together by using an array:
   └─┴─┴─┴─┴─┘    └─┴─┴─┴─┴─┘
 ```
 
+## GitHub Flavored Markdown Features
+
+This section demonstrates the newly enabled GFM (GitHub Flavored Markdown) support.
+
+### Practice Schedule
+
+A simple task list for music practice:
+
+- [x] Practice C major scale
+- [x] Learn A minor chord
+- [ ] Practice chord transitions
+- [ ] Learn fingerpicking pattern
+- [ ] Record practice session
+
+### Chord Reference Table
+
+Here's a quick reference table of common guitar chords:
+
+| Chord | Type | Difficulty | Common Use |
+|-------|------|------------|------------|
+| C Major | Open | Easy | Very common, key of C |
+| G Major | Open | Easy | Most popular chord |
+| D Major | Open | Medium | Key of D, G |
+| A Minor | Open | Easy | Relative minor of C |
+| E Minor | Open | Easy | Easiest minor chord |
+| F Major | Barre | Hard | Key of C, F |
+
+### Practice Notes
+
+~~Don't forget to practice B♭ major today~~ - Already completed!
+
+Remember to check out these resources:
+- https://www.musictheory.net
+- https://github.com/sithmel/remark-music-plugins
+
+### Scale Comparison
+
+| Scale Type | Notes (C) | Character | Use Case |
+|------------|-----------|-----------|----------|
+| Major | C D E F G A B | Happy, bright | Pop, classical |
+| Minor | C D E♭ F G A♭ B♭ | Sad, dark | Rock, blues |
+| Pentatonic | C D E G A | Versatile | Blues, rock solos |
+| Blues | C E♭ F F♯ G B♭ | Bluesy | Blues, jazz |
+
 This markdown file can be processed by both the remark-lilypond and remark-guitar-chart plugins to generate HTML with embedded SVG musical notation and guitar chord diagrams.
