@@ -59,7 +59,7 @@ svg {
     width: 33%;
 }
 .chord-container:has(.chord-item:nth-last-child(2)) > .chord-item {
-    width: 50%;
+    width: 66%;
 }
 .chord-container:has(.chord-item:nth-last-child(3)) > .chord-item {
     width: 100%;
