@@ -10,9 +10,19 @@ import remarkGuitarChart, {
 import { readFileSync } from "fs";
 import { join, basename, extname } from "path";
 
+
 const thisFolder = new URL(".", import.meta.url).pathname;
 const css = readFileSync(join(thisFolder, "remark.css"), "utf8");
 const printCss = readFileSync(join(thisFolder, "remark-print.css"), "utf8");
+
+const pagedJs = readFileSync(join(thisFolder, "pagedjs","paged.polyfill.js"), "utf8");
+
+/**
+ * 
+ */
+function getPaged() {
+
+}
 
 /**
  * Process markdown content with music notation plugins
@@ -49,7 +59,7 @@ async function processMarkdown(markdownContent, title = "", extraCss = "", paged
       <style>${css}</style>
       <style media="print">${printCss}</style>
       <style>${extraCss}</style>
-      ${paged ? '<script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>' : ''}
+      ${paged ? `<script>${pagedJs}</script>` : ''}
   </head>
   <body>
   ${result.toString()}

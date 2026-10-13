@@ -1,20 +1,61 @@
 /* Reset and Base Print Styles */
 * {
-    -webkit-print-color-adjust: exact !important;
-    color-adjust: exact !important;
-    print-color-adjust: exact !important;
+  -webkit-print-color-adjust: exact !important;
+  color-adjust: exact !important;
+  print-color-adjust: exact !important;
 }
 
 body > * {
-    page-break-inside: avoid;
+  page-break-inside: avoid;
 }
 
-/* Ensure important sections don't break awkwardly */
-h1, h2, h3 {
-    page-break-after: avoid;
+h1,
+h2,
+h3,
+h4,
+h5 {
+  break-after: avoid;
+  page-break-after: avoid;
 }
 
-p, li {
-    orphans: 2;
-    widows: 2;
+p,
+li {
+  orphans: 2;
+  widows: 2;
+}
+
+@page {
+  size: A4 portrait;
+}
+
+/* Left-hand pages: binding is on the right */
+@page :left {
+  margin-left: 10mm;
+  margin-right: 30mm;
+}
+
+/* Right-hand pages: binding is on the left */
+@page :right {
+  margin-left: 30mm;
+  margin-right: 10mm;
+}
+
+.page-break {
+  break-before: page;
+}
+
+.title-page {
+  width: 210mm;
+  height: 297mm;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+  break-after: page;
+}
+
+.title-page h1 {
+  font-size: 36pt;
 }
