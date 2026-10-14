@@ -26,6 +26,9 @@ li {
 
 @page {
   size: A4 portrait;
+  @bottom-center {
+    content: counter(page);
+  }
 }
 
 /* Left-hand pages: binding is on the right */
@@ -42,6 +45,18 @@ li {
 
 .page-break {
   break-before: page;
+}
+
+/* Keep consecutive chord containers together */
+.chord-container {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Avoid page breaks between a paragraph and the following chord */
+p:has(+ .chord-container), ul:has(+ .chord-container), p:has(+ .lilypond-svg), ul:has(+ .lilypond-svg), .chord-container:has(+ .chord-container) {
+  break-after: avoid;
+  page-break-after: avoid;
 }
 
 .title-page {
