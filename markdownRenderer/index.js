@@ -7,6 +7,13 @@ import remarkLilypond from "../plugins/remark-lilypond/index.js";
 import remarkGuitarChart, {
   closeBrowser,
 } from "../plugins/remark-guitar-chart/index.js";
+
+import remarkToc from 'remark-toc'
+import remarkRehype from "remark-rehype";
+import rehypeSlug from "rehype-slug";
+import rehypeStringify from "rehype-stringify";
+import rehypeRaw from "rehype-raw";
+
 import { readFileSync } from "fs";
 import { join, basename, extname } from "path";
 
@@ -16,6 +23,7 @@ const css = readFileSync(join(thisFolder, "remark.css"), "utf8");
 const printCss = readFileSync(join(thisFolder, "remark-print.css"), "utf8");
 
 const pagedJs = readFileSync(join(thisFolder, "pagedjs","paged.polyfill.js"), "utf8");
+const TOC = readFileSync(join(thisFolder, "pagedjs","toc.js"), "utf8");
 
 /**
  * 
@@ -44,7 +52,13 @@ async function processMarkdown(markdownContent, title = "", extraCss = "", paged
         skipOnMissing: true, // Skip if Puppeteer not available
       })
       .use(remarkGfm)
-      .use(remarkHtml, { sanitize: false }); // Allow raw HTML/SVG (needed for musical notation)
+      .use(remarkToc, {maxDepth: 5 })
+
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeRaw)
+      .use(rehypeSlug)
+      .use(rehypeStringify)
+      // .use(remarkHtml, { sanitize: false }); // Allow raw HTML/SVG (needed for musical notation)
 
     // Process the markdown
     const result = await processor.process(markdownContent);
@@ -60,6 +74,7 @@ async function processMarkdown(markdownContent, title = "", extraCss = "", paged
       <style media="print">${printCss}</style>
       <style>${extraCss}</style>
       ${paged ? `<script>${pagedJs}</script>` : ''}
+      ${paged ? `<script>${TOC}</script>` : ''}
   </head>
   <body>
   ${result.toString()}
