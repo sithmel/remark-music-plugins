@@ -52,7 +52,7 @@ async function processMarkdown(markdownContent, title = "", extraCss = "", paged
         skipOnMissing: true, // Skip if Puppeteer not available
       })
       .use(remarkGfm)
-      .use(remarkToc, {maxDepth: 5 })
+      .use(remarkToc, {maxDepth: 4 })
 
       .use(remarkRehype, { allowDangerousHtml: true })
       .use(rehypeRaw)

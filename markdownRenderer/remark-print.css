@@ -99,7 +99,7 @@ p:has(+ .chord-container), ul:has(+ .chord-container), p:has(+ .lilypond-svg), u
   text-align: center;
   box-sizing: border-box;
   break-after: page;
-  background-image: url(assets/cover.png);
+  /* background-image: url(assets/cover.png); */
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -114,9 +114,23 @@ p:has(+ .chord-container), ul:has(+ .chord-container), p:has(+ .lilypond-svg), u
   text-align: center;
   box-sizing: border-box;
   break-before: left;
-  background-color: #2a5c7e;
+  /* background-color: #2a5c7e; */
   page: lastpage;
 }
+
+.blank-page {
+  width: 210mm;
+  height: 297mm;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+  break-before: page;
+  background-color: white;
+}
+
 
 @page lastpage {
   margin: 0;
