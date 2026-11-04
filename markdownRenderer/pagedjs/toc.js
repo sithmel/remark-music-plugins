@@ -1,4 +1,3 @@
-
 // document.querySelectorAll('.pagedjs_page').forEach(pageElement => {
 //     const pageNumber = parseInt(pageElement.getAttribute('data-page-number'), 10);
 //     document.querySelectorAll('h1, h2, h3').forEach(header => {
@@ -6,17 +5,12 @@
 //     })
 // })
 
-
 class AddPageNumbersToToc extends Paged.Handler {
   afterRendered() {
-    const tocLinks = document.querySelectorAll(
-      "ul a[href^='#']"
-    );
+    const tocLinks = document.querySelectorAll("ul a[href^='#']");
 
     tocLinks.forEach((link) => {
-      const id = decodeURIComponent(
-        link.getAttribute("href").slice(1)
-      );
+      const id = decodeURIComponent(link.getAttribute("href").slice(1));
 
       const target = document.getElementById(id);
       const page = target?.closest(".pagedjs_page");

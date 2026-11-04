@@ -25,6 +25,10 @@ export type SVGuitarOptions = {
      * - Keep the Puppeteer browser open between processor runs for performance
      */
     keepAlive?: boolean;
+    /**
+     * - Color configuration for the guitar chart
+     */
+    colors?: any;
 };
 /**
  * Remark plugin to transform SVGuitar code blocks into inline SVG images

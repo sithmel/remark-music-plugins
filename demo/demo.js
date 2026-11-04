@@ -1,5 +1,5 @@
 //@ts-check
-import {markdownRenderer} from "../markdownRenderer/index.js";
+import { markdownRenderer } from "../markdownRenderer/index.js";
 import { join } from "path";
 import { fileURLToPath } from "url";
 

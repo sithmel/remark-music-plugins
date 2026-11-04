@@ -139,6 +139,7 @@ await renderer("input.md", "output.html");
 **Default Configuration:**
 
 The renderer uses these plugin settings by default:
+
 - `errorInline: true` - Shows errors inline in the generated HTML
 - `skipOnMissing: true` - Continues processing even if LilyPond or Puppeteer are unavailable
 - `sanitize: false` - Allows raw SVG/HTML output (required for musical notation)
@@ -286,7 +287,6 @@ const processor = remark().use(remarkLilypond, {
 ### GuitarChart Chord Data Format
 
 The GuitarChart plugin expects uses the syntax described [here](https://github.com/sithmel/text-guitar-chart)
-
 
 ### HTML Sanitization
 

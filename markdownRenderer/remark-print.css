@@ -1,7 +1,6 @@
 body {
-    padding: 0;
+  padding: 0;
 }
-
 
 /* Reset and Base Print Styles */
 * {
@@ -55,7 +54,6 @@ li {
   }
 }
 
-
 .page-break {
   break-before: page;
 }
@@ -67,7 +65,11 @@ li {
 }
 
 /* Avoid page breaks between a paragraph and the following chord */
-p:has(+ .chord-container), ul:has(+ .chord-container), p:has(+ .lilypond-svg), ul:has(+ .lilypond-svg), .chord-container:has(+ .chord-container) {
+p:has(+ .chord-container),
+ul:has(+ .chord-container),
+p:has(+ .lilypond-svg),
+ul:has(+ .lilypond-svg),
+.chord-container:has(+ .chord-container) {
   break-after: avoid;
   page-break-after: avoid;
 }
@@ -130,7 +132,6 @@ p:has(+ .chord-container), ul:has(+ .chord-container), p:has(+ .lilypond-svg), u
   break-before: page;
   background-color: white;
 }
-
 
 @page lastpage {
   margin: 0;

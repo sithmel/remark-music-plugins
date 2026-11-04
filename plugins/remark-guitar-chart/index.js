@@ -6,11 +6,16 @@
 import { visit } from "unist-util-visit";
 import puppeteer from "puppeteer";
 import { readFileSync } from "fs";
-import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-import {splitStringInRectangles, stringToFingering} from 'text-guitar-chart'
+import {
+  splitStringInRectangles,
+  stringToFingering,
+  defaultColors,
+} from "text-guitar-chart";
 
-const svguitarLibraryPath = fileURLToPath(await import.meta.resolve('svguitar'));
+const svguitarLibraryPath = fileURLToPath(
+  await import.meta.resolve("svguitar"),
+);
 
 /**
  * @typedef {Object} SVGuitarOptions
@@ -19,6 +24,7 @@ const svguitarLibraryPath = fileURLToPath(await import.meta.resolve('svguitar'))
  * @property {Object} [puppeteerOptions={}] - Options to pass to puppeteer.launch()
  * @property {import("svguitar").ChordSettings} [SVGuitarConfig={}] - Default configuration options for SVGuitar rendering
  * @property {boolean} [keepAlive=false] - Keep the Puppeteer browser open between processor runs for performance
+ * @property {Object} [colors=defaultColors] - Color configuration for the guitar chart
  */
 
 // Global browser instance for performance
@@ -65,6 +71,7 @@ function remarkGuitarChart(options = {}) {
     puppeteerOptions = {},
     SVGuitarConfig = {},
     keepAlive = false,
+    colors = defaultColors,
   } = options;
 
   /**
@@ -128,8 +135,9 @@ function remarkGuitarChart(options = {}) {
       try {
         // Parse the chord data
         const rectangles = splitStringInRectangles(node.value);
-        const chordDataArray = rectangles.map(rect => stringToFingering(rect)).filter(fingering => fingering !== null);
-
+        const chordDataArray = rectangles
+          .map((rect) => stringToFingering(rect, colors))
+          .filter((fingering) => fingering !== null);
 
         const SVGuitarConfigArray = chordDataArray.map((chord) =>
           adaptConfigToChord(chord, SVGuitarConfig),

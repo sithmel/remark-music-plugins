@@ -2,35 +2,37 @@
 import { readFile, writeFile } from "fs/promises";
 import { remark } from "remark";
 import remarkGfm from "remark-gfm";
-import remarkHtml from "remark-html";
 import remarkLilypond from "../plugins/remark-lilypond/index.js";
 import remarkGuitarChart, {
   closeBrowser,
 } from "../plugins/remark-guitar-chart/index.js";
 
-import remarkToc from 'remark-toc'
+import remarkToc from "remark-toc";
 import remarkRehype from "remark-rehype";
 import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
 import rehypeRaw from "rehype-raw";
+import { defaultColors } from "text-guitar-chart";
 
 import { readFileSync } from "fs";
 import { join, basename, extname } from "path";
-
 
 const thisFolder = new URL(".", import.meta.url).pathname;
 const css = readFileSync(join(thisFolder, "remark.css"), "utf8");
 const printCss = readFileSync(join(thisFolder, "remark-print.css"), "utf8");
 
-const pagedJs = readFileSync(join(thisFolder, "pagedjs","paged.polyfill.js"), "utf8");
-const TOC = readFileSync(join(thisFolder, "pagedjs","toc.js"), "utf8");
+const pagedJs = readFileSync(
+  join(thisFolder, "pagedjs", "paged.polyfill.js"),
+  "utf8",
+);
+const TOC = readFileSync(join(thisFolder, "pagedjs", "toc.js"), "utf8");
 
-/**
- * 
- */
-function getPaged() {
-
-}
+const b_and_w_colors = {
+  defaultColor: "#000000",
+  primaryColor: "#BBBBBB",
+  secondaryColor: "#888888",
+  tertiaryColor: "#555555",
+};
 
 /**
  * Process markdown content with music notation plugins
@@ -38,7 +40,13 @@ function getPaged() {
  * @param {string} [title=""] - Optional title for the HTML document
  * @returns {Promise<string>} The generated HTML output
  */
-async function processMarkdown(markdownContent, title = "", extraCss = "", paged = false) {
+async function processMarkdown(
+  markdownContent,
+  title = "",
+  extraCss = "",
+  paged = false,
+  tabColors = true,
+) {
   try {
     // Create processor with plugins
     const processor = remark()
@@ -50,15 +58,16 @@ async function processMarkdown(markdownContent, title = "", extraCss = "", paged
       .use(remarkGuitarChart, {
         errorInline: true,
         skipOnMissing: true, // Skip if Puppeteer not available
+        colors: tabColors ? defaultColors : b_and_w_colors,
       })
       .use(remarkGfm)
-      .use(remarkToc, {maxDepth: 4 })
+      .use(remarkToc, { maxDepth: 4 })
 
       .use(remarkRehype, { allowDangerousHtml: true })
       .use(rehypeRaw)
       .use(rehypeSlug)
-      .use(rehypeStringify)
-      // .use(remarkHtml, { sanitize: false }); // Allow raw HTML/SVG (needed for musical notation)
+      .use(rehypeStringify);
+    // .use(remarkHtml, { sanitize: false }); // Allow raw HTML/SVG (needed for musical notation)
 
     // Process the markdown
     const result = await processor.process(markdownContent);
@@ -73,8 +82,8 @@ async function processMarkdown(markdownContent, title = "", extraCss = "", paged
       <style>${css}</style>
       <style media="print">${printCss}</style>
       <style>${extraCss}</style>
-      ${paged ? `<script>${pagedJs}</script>` : ''}
-      ${paged ? `<script>${TOC}</script>` : ''}
+      ${paged ? `<script>${pagedJs}</script>` : ""}
+      ${paged ? `<script>${TOC}</script>` : ""}
   </head>
   <body>
   ${result.toString()}
@@ -116,15 +125,26 @@ async function processMarkdown(markdownContent, title = "", extraCss = "", paged
  * @param {string} [options.title] - title for the HTML document
  * @param {string} [options.css = ""] - additional css
  * @param {boolean} [options.paged = false] - whether to include paged.js for pagination
+ * @param {boolean} [options.tabColors = true] - whether to use colors in tabs
  */
-export async function markdownRenderer(inputFilePath, outputFilePath, options = {}) {
-  const {title, css = "", paged = false} = options;
+export async function markdownRenderer(
+  inputFilePath,
+  outputFilePath,
+  options = {},
+) {
+  const { title, css = "", paged = false, tabColors = true } = options;
   console.log("Running Markdown Renderer...");
 
   const markdownContent = await readFile(inputFilePath, "utf8");
   console.log("✓ Read markdown file");
 
-  const htmlOutput = await processMarkdown(markdownContent, title ?? basename(inputFilePath, extname(inputFilePath)), css, paged);
+  const htmlOutput = await processMarkdown(
+    markdownContent,
+    title ?? basename(inputFilePath, extname(inputFilePath)),
+    css,
+    paged,
+    tabColors,
+  );
 
   await writeFile(outputFilePath, htmlOutput, "utf8");
   console.log(`✓ Generated ${outputFilePath}`);

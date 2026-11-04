@@ -3,7 +3,6 @@
  * @fileoverview Main entry point for music-md package exposing remark plugins
  */
 
-
 /**
  * Remark plugin for converting LilyPond code blocks to inline SVG
  * @type {import("./plugins/remark-lilypond/index.js").default}
@@ -19,4 +18,4 @@ export {
   closeBrowser,
 } from "./plugins/remark-guitar-chart/index.js";
 
-export {markdownRenderer} from "./markdownRenderer/index.js";
+export { markdownRenderer } from "./markdownRenderer/index.js";
