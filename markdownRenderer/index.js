@@ -12,7 +12,6 @@ import remarkRehype from "remark-rehype";
 import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
 import rehypeRaw from "rehype-raw";
-import { defaultColors } from "text-guitar-chart";
 
 import { readFileSync } from "fs";
 import { join, basename, extname } from "path";
@@ -32,6 +31,13 @@ const b_and_w_colors = {
   primaryColor: "#BBBBBB",
   secondaryColor: "#888888",
   tertiaryColor: "#555555",
+};
+
+const colors = {
+  defaultColor: "#000000",
+  primaryColor: "#c4786e",
+  secondaryColor: "#9bbce4",
+  tertiaryColor: "#c8e9d7",
 };
 
 /**
@@ -58,7 +64,7 @@ async function processMarkdown(
       .use(remarkGuitarChart, {
         errorInline: true,
         skipOnMissing: true, // Skip if Puppeteer not available
-        colors: tabColors ? defaultColors : b_and_w_colors,
+        colors: tabColors ? colors : b_and_w_colors,
       })
       .use(remarkGfm)
       .use(remarkToc, { maxDepth: 4 })
