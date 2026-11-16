@@ -35,9 +35,9 @@ const b_and_w_colors = {
 
 const colors = {
   defaultColor: "#000000",
-  primaryColor: "#c4786e",
-  secondaryColor: "#9bbce4",
-  tertiaryColor: "#c8e9d7",
+  primaryColor: "#db6657",
+  secondaryColor: "#aac9ee",
+  tertiaryColor: "#99ffc7",
 };
 
 /**
